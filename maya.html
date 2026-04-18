@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sayangkuuuu! ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #fff5f7;
+            overflow-x: hidden;
+            margin: 0;
+            user-select: none;
+        }
+
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Background Animasi Hati */
+        #canvas-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Overlay Pembuka */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background: #ff8fa3;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+        }
+
+        /* Polaroid Gallery */
+        .polaroid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: rotate(var(--r));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 1px solid #eee;
+        }
+
+        .polaroid:hover {
+            transform: scale(1.1) rotate(0deg) !important;
+            z-index: 50;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .polaroid img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            background: #fdf2f4;
+            display: block;
+        }
+
+        .polaroid p {
+            margin-top: 15px;
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Animasi Amplop */
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #ff4d6d;
+            border-radius: 0 0 10px 10px;
+            transition: transform 0.5s;
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 100px solid #ff758f;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            transform-origin: top;
+            transition: transform 0.5s 0.3s;
+        }
+
+        .envelope.open::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            height: 180px;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            transition: transform 0.5s 0.6s;
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-120px);
+        }
+
+        /* Cake & Candle */
+        .cake {
+            position: relative;
+            width: 180px;
+            height: 120px;
+            background: #f9dcc4;
+            border-radius: 10px 10px 0 0;
+            margin: 0 auto;
+            box-shadow: 0 10px 0 #e8be9e;
+        }
+        .candle {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 40px;
+            background: linear-gradient(to bottom, #fff, #ffe5ec);
+            border-radius: 4px;
+        }
+        .flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 20px;
+            background: #ffa500;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ff4500;
+            animation: flicker 0.1s infinite alternate;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Gift Box */
+        .gift-container {
+            width: 100px;
+            height: 100px;
+            background: #ff4d6d;
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .gift-container::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: #ff758f;
+            top: 40%;
+        }
+        .gift-container::after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 20px;
+            background: #ff758f;
+            left: 40%;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-hearts"></canvas>
+
+    <!-- Overlay Pembuka -->
+    <div id="overlay">
+        <div class="text-center p-8">
+            <h1 class="text-white text-5xl mb-6 cursive">Hai Sayang...</h1>
+            <p class="text-white mb-8 text-lg">Siap untuk kejutan hari ini?</p>
+            <button onclick="startExperience()" class="bg-white text-pink-500 font-bold py-4 px-10 rounded-full text-xl uppercase tracking-widest shadow-xl hover:scale-110 transition-transform">
+                Masuk ❤️
+            </button>
+        </div>
+    </div>
+
+    <!-- Konten Utama -->
+    <div id="main-content" class="min-h-screen p-4 md:p-12 opacity-0 transition-opacity duration-1000">
+        
+        <header class="text-center mb-16 pt-10">
+            <h1 class="text-pink-600 text-6xl md:text-8xl cursive mb-4 floating">Happy Birthday!</h1>
+            <h2 class="text-pink-400 text-3xl md:text-5xl font-bold italic cursive">My Beautiful Girl Sumayya🤭</h2>
+        </header>
+
+        <!-- BARU: GALERI FOTO POLAROID -->
+        <div class="mb-24">
+            <h3 class="text-center text-2xl text-pink-500 font-bold mb-10 uppercase tracking-widest">Kenangan Manis Kita ✨</h3>
+            <div class="polaroid-container">
+                <!-- Foto 1 -->
+                <div class="polaroid" style="--r: -3deg">
+                    <img src="foto0.jpeg" alt="Foto Kenangan 1">
+                    <p class="cursive">anak kecil ini sudah kepala 2 hihi</p>
+                </div>
+                <!-- Foto 2 -->
+                <div class="polaroid" style="--r: 2deg">
+                    <img src="foto1.jpeg" alt="Foto Kenangan 2">
+                    <p class="cursive">ini pap pertama kamu ke aku heh3</p>
+                    <p class="cursive">dan kamu CANTIK BANGET AKU SYUKAA</p>
+                </div>
+                <!-- Foto 3 -->
+                <div class="polaroid" style="--r: -1deg">
+                    <img src="foto3.jpeg" alt="Foto Kenangan 3">
+                    <p class="cursive">ini foto selfie pertama kita</p>
+                    <p class="cursive">masih canggung banget ya kita xixixi</p>
+                </div>
+                 <!-- Foto 4 -->
+                <div class="polaroid" style="--r: -1deg">
+                    <img src="foto6.jpeg" alt="Foto Kenangan 3">
+                    <p class="cursive">ini fotobooth pertama kita</p>
+                    <p class="cursive">masi inget banget tiba-tiba diajak HAHAHAHA</p>
+                </div>
+                 <!-- Foto 5 -->
+                <div class="polaroid" style="--r: -1deg">
+                    <img src="foto5.jpeg" alt="Foto Kenangan 3">
+                    <p class="cursive">kalo ini foto gym pertama kita</p>
+                    <p class="cursive">puasa puasa pun kita bante gym yakan sayangg</p>
+                </div>
+                 <!-- Foto 6 -->
+                <div class="polaroid" style="--r: -1deg">
+                    <img src="foto4.jpeg" alt="Foto Kenangan 3">
+                    <p class="cursive">lihat ini, sangat indah bukan</p>
+                    <p class="cursive">kupu-kupu bahkan kalah indahnya</p>
+                </div>
+            </div>
+            <p class="text-center text-pink-300 text-sm mt-4 italic italic">*terlalu banyak kenangan kita, kalo ditarok semua ntar gamuat wkwk</p>
+        </div>
+
+        <!-- FITUR 1: TIUP LILIN -->
+        <div class="flex flex-col items-center justify-center mb-24">
+            <h3 class="text-2xl text-pink-500 cursive mb-6" id="candle-instruction">Tiup lilinnya dan buat permohonan! ✨</h3>
+            <div class="relative mt-12 cursor-pointer scale-125" onclick="blowCandle()">
+                <div class="candle">
+                    <div id="candle-flame" class="flame"></div>
+                </div>
+                <div class="cake"></div>
+            </div>
+            <p id="mic-status" class="mt-8 text-xs text-pink-300 italic"></p>
+        </div>
+
+        <!-- FITUR 2: KOTAK KADO INTERAKTIF -->
+        <div class="flex flex-col items-center justify-center mb-24">
+            <h3 class="text-xl text-pink-500 font-bold mb-6 uppercase">Ada kado virtual buat kamu!</h3>
+            <div id="gift-box" onclick="openGift()" class="gift-container hover:rotate-6 flex items-center justify-center">
+                <span class="text-white text-3xl">🎁</span>
+            </div>
+            <div id="gift-message" class="hidden mt-6 text-center text-pink-600 font-bold text-2xl animate-bounce">
+                HUG & KISS VIRTUAL SEPUASNYA! 💖
+            </div>
+        </div>
+
+        <!-- FITUR 3: TRIVIA MINI -->
+        <div class="max-w-md mx-auto mb-24 bg-white/60 p-6 rounded-2xl border-2 border-pink-200 text-center shadow-lg">
+            <h3 class="text-pink-600 font-bold mb-4 uppercase text-sm tracking-widest">Mini Game: Kenal Aku?</h3>
+            <p id="trivia-question" class="text-gray-700 mb-6">Apa makanan kesukaan aku pas lagi bareng kamu?</p>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="checkTrivia(false)" class="bg-pink-100 py-2 rounded-lg text-pink-600 hover:bg-pink-200">Mie Bangladesh</button>
+                <button onclick="checkTrivia(false)" class="bg-pink-100 py-2 rounded-lg text-pink-600 hover:bg-pink-200">Ayam Lubuk</button>
+                <button onclick="checkTrivia(false)" class="bg-pink-100 py-2 rounded-lg text-pink-600 hover:bg-pink-200">Mie Aceh</button>
+                <button onclick="checkTrivia(true)" class="bg-pink-100 py-2 rounded-lg text-pink-600 hover:bg-pink-200">Apapun Asal Sama Kamu</button>
+            </div>
+            <p id="trivia-result" class="mt-4 text-sm font-bold h-5"></p>
+        </div>
+
+        <!-- Section Pesan/Surat -->
+        <div class="flex flex-col items-center justify-center mb-24">
+            <div class="envelope-wrapper" onclick="toggleEnvelope(this)">
+                <div class="envelope">
+                    <div class="letter text-gray-700">
+                        <p class="text-sm italic mb-2">Dear My Love,</p>
+                        <p class="text-xs leading-relaxed">
+                            Selamat ulang tahun yang paling spesial! Aku bersyukur banget bisa ada di sisi kamu sampai hari ini. Kamu itu seperti kopi pagi: menenangkan dan bikin semangat. Jangan pernah berhenti tersenyum ya, karena dunia jadi lebih gelap tanpa senyum kamu. Love you more than you know! ❤️
+                        </p>
+                        <p class="text-right mt-4 cursive font-bold text-pink-500">- Dari Orang Favoritmu</p>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-pink-400 font-medium animate-pulse">Klik amplopnya ya...</p>
+        </div>
+
+        <footer class="text-center pb-20">
+            <p class="text-gray-500 text-sm">Tap dimana saja untuk cinta ❤️</p>
+            <div class="text-4xl mt-4">🎂 ✨ 🎁 💖</div>
+        </footer>
+        <footer class="text-center pb-20">
+            <p class="text-gray-500 text-sm">@2026 Sangkot Hidayat Siregar, web ini dibuat dengan cinta ❤️</p>
+            <div class="text-4xl mt-4">💖</div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="lagufav.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('canvas-hearts');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Heart {
+            constructor(x, y, isClick = false) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || (isClick ? y : canvas.height + 100);
+                this.size = Math.random() * 15 + 10;
+                this.speed = isClick ? Math.random() * 4 + 2 : Math.random() * 2 + 1;
+                this.opacity = 1;
+                this.isClick = isClick;
+            }
+            update() {
+                this.y -= this.speed;
+                if(this.isClick) this.opacity -= 0.02;
+                if (this.y < -100 || this.opacity <= 0) this.reset();
+            }
+            reset() {
+                if(this.isClick) {
+                    hearts = hearts.filter(h => h !== this);
+                } else {
+                    this.y = canvas.height + 100;
+                    this.x = Math.random() * canvas.width;
+                    this.opacity = 1;
+                }
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = '#ff8fa3';
+                ctx.beginPath();
+                const d = this.size;
+                ctx.moveTo(this.x, this.y + d / 4);
+                ctx.quadraticCurveTo(this.x, this.y, this.x + d / 4, this.y);
+                ctx.quadraticCurveTo(this.x + d / 2, this.y, this.x + d / 2, this.y + d / 4);
+                ctx.quadraticCurveTo(this.x + d / 2, this.y, this.x + d * 3/4, this.y);
+                ctx.quadraticCurveTo(this.x + d, this.y, this.x + d, this.y + d / 4);
+                ctx.quadraticCurveTo(this.x + d, this.y + d / 2, this.x + d / 2, this.y + d);
+                ctx.quadraticCurveTo(this.x, this.y + d / 2, this.x, this.y + d / 4);
+                ctx.fill();
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
+                for(let i=0; i<5; i++) {
+                    hearts.push(new Heart(e.clientX + (Math.random()-0.5)*20, e.clientY, true));
+                }
+            }
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(heart => {
+                heart.update();
+                heart.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function blowCandle() {
+            const flame = document.getElementById('candle-flame');
+            if (flame.style.opacity !== '0') {
+                flame.style.opacity = '0';
+                document.getElementById('candle-instruction').innerText = "Yeeay! Permohonanmu terkabul! 🎉";
+                readMessage("Selamat ulang tahun maya ku sayang! Aku sangat mencintaimu.");
+                confettiEffect();
+            }
+        }
+
+        function openGift() {
+            const gift = document.getElementById('gift-box');
+            const msg = document.getElementById('gift-message');
+            gift.style.transform = 'scale(0)';
+            setTimeout(() => {
+                gift.style.display = 'none';
+                msg.classList.remove('hidden');
+                confettiEffect();
+            }, 300);
+        }
+
+        function checkTrivia(isCorrect) {
+            const res = document.getElementById('trivia-result');
+            if(isCorrect) {
+                res.innerText = "Pinter banget! Emang paling ngerti aku ❤️";
+                res.className = "mt-4 text-sm font-bold text-green-500";
+                confettiEffect();
+            } else {
+                res.innerText = "Hmm.. amanla salah 😒 ";
+                res.className = "mt-4 text-sm font-bold text-red-400";
+            }
+        }
+
+        function readMessage(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function confettiEffect() {
+            for(let i=0; i<50; i++) {
+                hearts.push(new Heart(Math.random() * canvas.width, Math.random() * canvas.height, true));
+            }
+        }
+
+        function startExperience() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('main-content').classList.remove('opacity-0');
+                document.getElementById('bg-music').play().catch(() => {});
+                setupMic();
+            }, 1000);
+            
+            for(let i=0; i<20; i++) hearts.push(new Heart());
+            animate();
+        }
+
+        async function setupMic() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioContext = new AudioContext();
+                const analyzer = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyzer);
+                analyzer.fftSize = 256;
+                const bufferLength = analyzer.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                function checkBlow() {
+                    analyzer.getByteFrequencyData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < bufferLength; i++) sum += dataArray[i];
+                    if ((sum / bufferLength) > 40) blowCandle();
+                    requestAnimationFrame(checkBlow);
+                }
+                document.getElementById('mic-status').innerText = "(Mic aktif: Kamu bisa tiup beneran!)";
+                checkBlow();
+            } catch (e) {
+                document.getElementById('mic-status').innerText = "(Klik lilinnya untuk meniup)";
+            }
+        }
+
+        function toggleEnvelope(el) {
+            el.querySelector('.envelope').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
